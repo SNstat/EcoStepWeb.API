@@ -19,7 +19,7 @@ public class User : BaseEntity
 
     public DateTime RegistrationDate { get; set; }
 
-    public int TotalEcoPoints { get; set; }
+    public int TotalEcoPoints { get; set; } = 0;
 
     public bool IsActive { get; set; } = true;
 
