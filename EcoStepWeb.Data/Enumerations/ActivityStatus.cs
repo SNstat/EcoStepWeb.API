@@ -4,6 +4,6 @@ public enum ActivityStatus
 {
     Registered,
     Completed,
-    Cancelled, // cancelled by author
+    Cancelled, // cancelled by organizer
     Removed // removed by moderators
 }
