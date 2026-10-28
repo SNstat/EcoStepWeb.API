@@ -4,5 +4,6 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="EcoStepWeb.API/EcoStepWeb.API.csproj" />
+  <Project Path="EcoStepWeb.Business/EcoStepWeb.Business.csproj" Id="cc605d82-4c51-4b28-943c-fdea982f9256" />
   <Project Path="EcoStepWeb.Data/EcoStepWeb.Data.csproj" />
 </Solution>

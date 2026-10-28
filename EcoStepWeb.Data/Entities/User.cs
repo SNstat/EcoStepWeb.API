@@ -17,13 +17,13 @@ public class User : BaseEntity
     [StringLength(Constants.SMALLSTRINGLENGHT)]
     public string PasswordHash { get; set; } = string.Empty;
 
-    public DateTime RegistrationDate { get; set; }
+    public DateTime RegistrationDate { get; set; } = DateTime.UtcNow;
 
     public int TotalEcoPoints { get; set; } = 0;
 
     public bool IsActive { get; set; } = true;
 
-    public virtual UserRole UserRole { get; set; }
+    public UserRole UserRole { get; set; }
 
     public virtual ICollection<ActivityRegistration> ActivityRegistrations { get; set; } = [];
 

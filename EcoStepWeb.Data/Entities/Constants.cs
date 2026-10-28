@@ -1,6 +1,6 @@
 ﻿namespace EcoStepWeb.Data.Entities;
 
-internal static class Constants
+public static class Constants
 {
     public const int SMALLSTRINGLENGHT = 100;
 

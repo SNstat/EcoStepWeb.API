@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EcoStepWeb.Data;
 
-internal class AppDbContext : DbContext
+public class AppDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
     public DbSet<Activity> Activities { get; set; }

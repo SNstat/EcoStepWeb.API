@@ -20,7 +20,7 @@ public class Activity : BaseEntity
 
     public int PointsForParticipation { get; set; } = 0;
 
-    public int? MaxParticipants { get; set; } = null;
+    public int? MaxParticipants { get; set; }
 
     public ActivityStatus Status { get; set; } = ActivityStatus.Registered;
 
