@@ -12,6 +12,9 @@ public interface IActivityMapper
     void UpdateEntity(ActivityDto activityDto, Activity activity);
 }
 
+#pragma warning disable RMG012
+#pragma warning disable RMG020
+
 [Mapper]
 public partial class ActivityMapper : IActivityMapper
 {
