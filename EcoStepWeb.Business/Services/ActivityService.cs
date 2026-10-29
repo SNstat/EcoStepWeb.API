@@ -1,5 +1,6 @@
 ﻿using EcoStepWeb.API.DTOs;
 using EcoStepWeb.Data;
+using EcoStepWeb.Data.Enumerations;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcoStepWeb.API.Services;
@@ -107,6 +108,11 @@ public class ActivityService(AppDbContext context) : IActivityService
         activity.EndingDateTime = request.EndingDateTime;
         activity.PointsForParticipation = request.PointsForParticipation;
         activity.MaxParticipants = request.MaxParticipants;
+        
+        if(request.Status != null)
+        {
+            activity.Status = Enum.Parse<ActivityStatus>(request.Status, ignoreCase: true);
+        }
 
         await context.SaveChangesAsync();
 

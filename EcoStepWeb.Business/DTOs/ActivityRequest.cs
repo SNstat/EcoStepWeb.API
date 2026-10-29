@@ -11,4 +11,5 @@ public record ActivityRequest(
     [Required] DateTime EndingDateTime,
     [Range(1, 1000)] int PointsForParticipation,
     [Range(1, int.MaxValue)] int? MaxParticipants,
-    [Range(1, int.MaxValue)] int? OrganiserId);
+    [Range(1, int.MaxValue)] int? OrganiserId,
+    string? Status);

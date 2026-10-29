@@ -9,7 +9,7 @@ public static class DataModule
     public static IServiceCollection AddDataModule(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseSqlite(connectionString));
 
         return services;
     }
@@ -18,6 +18,7 @@ public static class DataModule
     {
         using var scope = services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await context.Database.MigrateAsync();
         await DataSeeder.SeedDevelopmentDataAsync(context);
 
         return services;

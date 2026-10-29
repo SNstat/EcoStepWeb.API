@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=EcoStepDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlite("Data Source=../EcoStepWeb.Data/Database/EcoStepDB.db");
         }
 
         base.OnConfiguring(optionsBuilder);

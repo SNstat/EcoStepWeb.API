@@ -15,11 +15,11 @@ namespace EcoStepWeb.Data.Migrations
                 name: "Badges",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    IconUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    IconUrl = table.Column<string>(type: "TEXT", maxLength: 200, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -30,16 +30,16 @@ namespace EcoStepWeb.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalEcoPoints = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    UserRole = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FirstName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    RegistrationDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TotalEcoPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    UserRole = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,17 +50,17 @@ namespace EcoStepWeb.Data.Migrations
                 name: "Activities",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    StartingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndingDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PointsForParticipation = table.Column<int>(type: "int", nullable: false),
-                    MaxParticipants = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    OrganizerId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Location = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    StartingDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndingDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PointsForParticipation = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxParticipants = table.Column<int>(type: "INTEGER", nullable: true),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    OrganizerId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,12 +77,12 @@ namespace EcoStepWeb.Data.Migrations
                 name: "DailyStepLogs",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StepCount = table.Column<int>(type: "int", nullable: false),
-                    AwardedPoints = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    StepCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    AwardedPoints = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,11 +99,11 @@ namespace EcoStepWeb.Data.Migrations
                 name: "UserBadges",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AwardDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    BadgeId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AwardDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    BadgeId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,12 +126,12 @@ namespace EcoStepWeb.Data.Migrations
                 name: "ActivityRegistrations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RegistrationDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RegistrationStatus = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ActivityId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RegistrationDateTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    RegistrationStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ActivityId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
