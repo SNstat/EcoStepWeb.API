@@ -1,23 +1,22 @@
-﻿using EcoStepWeb.API.DTOs;
-using EcoStepWeb.API.Services;
-using Microsoft.AspNetCore.Authorization;
+﻿using EcoStepWeb.API.Services;
+using EcoStepWeb.Business.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoStepWeb.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ActivitiesController(IActivityService activityService) : ControllerBase
+public class activityController(IActivityService activityService) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<List<ActivityResponse>>> GetAll()
+    public async Task<ActionResult<List<ActivityDto>>> GetAll()
     {
         var activities = await activityService.GetAllAsync();
         return Ok(activities);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<ActivityResponse>> GetById(int id)
+    public async Task<ActionResult<ActivityDto>> GetById(int id)
     {
         var activity = await activityService.GetByIdAsync(id);
 
@@ -28,7 +27,7 @@ public class ActivitiesController(IActivityService activityService) : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<ActivityResponse>> Create(ActivityRequest request)
+    public async Task<ActionResult<ActivityDto>> Create(ActivityDto request)
     {
         var createdActivity = await activityService.CreateAsync(request);
 
@@ -36,7 +35,7 @@ public class ActivitiesController(IActivityService activityService) : Controller
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<ActivityResponse>> Update(int id, ActivityRequest request)
+    public async Task<ActionResult<ActivityDto>> Update(int id, ActivityDto request)
     {
         var updatedActivity = await activityService.UpdateAsync(id, request);
 

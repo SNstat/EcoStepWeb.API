@@ -1,4 +1,5 @@
-﻿using EcoStepWeb.API.DTOs;
+﻿using EcoStepWeb.Business.DTOs;
+using EcoStepWeb.Business.Mappers;
 using EcoStepWeb.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,122 +7,51 @@ namespace EcoStepWeb.API.Services;
 
 public interface IActivityService
 {
-    Task<List<ActivityResponse>> GetAllAsync();
-    Task<ActivityResponse?> GetByIdAsync(int id);
-    Task<ActivityResponse> CreateAsync(ActivityRequest request);
-    Task<ActivityResponse?> UpdateAsync(int id, ActivityRequest request);
+    Task<List<ActivityDto>> GetAllAsync();
+    Task<ActivityDto?> GetByIdAsync(int id);
+    Task<ActivityDto> CreateAsync(ActivityDto dto);
+    Task<ActivityDto?> UpdateAsync(int id, ActivityDto dto);
 }
 
-public class ActivityService(AppDbContext context) : IActivityService
+public class ActivityService(AppDbContext context, IActivityMapper activityMapper) : IActivityService
 {
-    public async Task<List<ActivityResponse>> GetAllAsync()
+    public Task<List<ActivityDto>> GetAllAsync()
+        => activityMapper.ToDtos(context.Activities).ToListAsync();
+
+    public Task<ActivityDto?> GetByIdAsync(int id)
+        => activityMapper.ToDtos(context.Activities.Where(a => a.Id == id)).FirstOrDefaultAsync();
+
+
+    public async Task<ActivityDto> CreateAsync(ActivityDto dto)
     {
-        var activityResponses = await context.Activities
-            .Select(_ => new ActivityResponse(
-                _.Id,
-                _.Title,
-                _.Description,
-                _.Location,
-                _.StartingDateTime,
-                _.EndingDateTime,
-                _.PointsForParticipation,
-                _.MaxParticipants,
-                _.Status.ToString(),
-                _.Organizer.UserName)
-        ).ToListAsync();
-
-        return activityResponses;
-    }
-
-    public async Task<ActivityResponse?> GetByIdAsync(int id)
-    {
-        var activityResponse = await context.Activities
-            .Where(_ => _.Id == id)
-            .Select(_ => new ActivityResponse(
-                _.Id,
-                _.Title,
-                _.Description,
-                _.Location,
-                _.StartingDateTime,
-                _.EndingDateTime,
-                _.PointsForParticipation,
-                _.MaxParticipants,
-                _.Status.ToString(),
-                _.Organizer.UserName))
-            .FirstOrDefaultAsync();
-
-        return activityResponse;
-    }
-
-    public async Task<ActivityResponse> CreateAsync(ActivityRequest request)
-    {
-        var newActivity = new Data.Entities.Activity
-        {
-            Title = request.Title,
-            Description = request.Description,
-            Location = request.Location,
-            StartingDateTime = request.StartingDateTime,
-            EndingDateTime = request.EndingDateTime,
-            PointsForParticipation = request.PointsForParticipation,
-            MaxParticipants = request.MaxParticipants,
-            OrganizerId = (int)request.OrganiserId!
-        };
+        var newActivity = activityMapper.ToEntity(dto);
 
         context.Activities.Add(newActivity);
+
         await context.SaveChangesAsync();
 
-        var organizerName = await context.Users
-            .Where(_ => _.Id == request.OrganiserId)
-            .Select(_ => _.UserName)
-            .FirstAsync();
+        var responseDto = await activityMapper.ToDtos(context.Activities
+                               .Where(a => a.Id == newActivity.Id))
+                               .FirstAsync();
 
-        var newActivityResponse = new ActivityResponse(
-            newActivity.Id,
-            newActivity.Title,
-            newActivity.Description,
-            newActivity.Location,
-            newActivity.StartingDateTime,
-            newActivity.EndingDateTime,
-            newActivity.PointsForParticipation,
-            newActivity.MaxParticipants,
-            newActivity.Status.ToString(),
-            organizerName);
-
-        return newActivityResponse;
+        return responseDto;
     }
 
-    public async Task<ActivityResponse?> UpdateAsync(int id, ActivityRequest request)
+    public async Task<ActivityDto?> UpdateAsync(int id, ActivityDto dto)
     {
-        var activity = await context.Activities
+        var targetActivity = await context.Activities
             .Include(_ => _.Organizer)
             .FirstOrDefaultAsync(_ => _.Id == id);
 
-        if (activity == null) {
-            return null!;
-        }
+        if (targetActivity is null)
+            return null;
 
-        activity.Title = request.Title;
-        activity.Description = request.Description;
-        activity.Location = request.Location;
-        activity.StartingDateTime = request.StartingDateTime;
-        activity.EndingDateTime = request.EndingDateTime;
-        activity.PointsForParticipation = request.PointsForParticipation;
-        activity.MaxParticipants = request.MaxParticipants;
+        activityMapper.UpdateEntity(dto, targetActivity);
 
         await context.SaveChangesAsync();
 
-        var newActivityResponse = new ActivityResponse(
-            activity.Id,
-            activity.Title,
-            activity.Description,
-            activity.Location,
-            activity.StartingDateTime,
-            activity.EndingDateTime,
-            activity.PointsForParticipation,
-            activity.MaxParticipants,
-            activity.Status.ToString(),
-            activity.Organizer.UserName);
+        var responseDto = activityMapper.ToDto(targetActivity);
 
-        return newActivityResponse;
+        return responseDto;
     }
 }

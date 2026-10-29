@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Riok.Mapperly" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\EcoStepWeb.Data\EcoStepWeb.Data.csproj" />
   </ItemGroup>
 
