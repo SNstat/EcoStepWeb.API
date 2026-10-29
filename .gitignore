@@ -364,3 +364,6 @@ FodyWeavers.xsd
 /EcoStepWeb.Data/Database/EcoStepDB.db
 /EcoStepWeb.Data/Database/EcoStepDB.db-shm
 /EcoStepWeb.Data/Database/EcoStepDB.db-wal
+/EcoStepWeb.Data/Database/EcoStepDB.sqlite
+/EcoStepWeb.Data/Database/EcoStepDB.sqlite-shm
+/EcoStepWeb.Data/Database/EcoStepDB.sqlite-wal
