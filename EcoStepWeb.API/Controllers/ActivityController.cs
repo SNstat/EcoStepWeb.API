@@ -1,12 +1,14 @@
 ﻿using EcoStepWeb.API.Services;
 using EcoStepWeb.Business.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcoStepWeb.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class activityController(IActivityService activityService) : ControllerBase
+public class ActivityController(IActivityService activityService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<ActivityDto>>> GetAll()
