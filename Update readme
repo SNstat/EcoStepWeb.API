@@ -7,4 +7,4 @@
 | **Scalar** | Support for calling REST APIs | Implemented |
 | **Entity Framework Core** | ORM | Implemented |
 | **SQLite** | Persistent local database engine | Implemented |
-| **JWT** | Lightweight JSON auth token transfer for REST message authentication | Not yet implemented |
+| **JWT** | Lightweight JSON auth token transfer for REST message authentication | Implemented (basic) |
