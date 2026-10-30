@@ -9,7 +9,7 @@ public static class BusinessModule
     public static IServiceCollection AddBusinessModule(this IServiceCollection services)
     {
         services.AddScoped<IActivityService, ActivityService>();
-        services.AddSingleton<IActivityMapper, ActivityMapper>();
+        services.AddSingleton<ActivityMapper>();
 
         return services;
     }

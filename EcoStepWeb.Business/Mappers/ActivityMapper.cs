@@ -4,34 +4,27 @@ using Riok.Mapperly.Abstractions;
 
 namespace EcoStepWeb.Business.Mappers;
 
-public interface IActivityMapper
-{
-    ActivityDto ToDto(Activity activity);
-    IQueryable<ActivityDto> ToDtos(IQueryable<Activity> activities);
-    Activity ToEntity(ActivityDto activityDto);
-    void UpdateEntity(ActivityDto activityDto, Activity activity);
-}
-
 #pragma warning disable RMG012
 #pragma warning disable RMG020
+#pragma warning disable RMG065
 
 [Mapper]
-public partial class ActivityMapper : IActivityMapper
+public partial class ActivityMapper
 {
     [MapProperty(nameof(Activity.Status), nameof(ActivityDto.StatusText))]
     [MapProperty(nameof(Activity.Organizer.UserName), nameof(ActivityDto.OrganizerUserName))]
-    public partial ActivityDto ToDto(Activity activity);
+    public partial ActivityDto MapActivityToDto(Activity activity);
 
-    public partial IQueryable<ActivityDto> ToDtos(IQueryable<Activity> activities);
+    public partial IQueryable<ActivityDto> MapActivitiesToDtos(IQueryable<Activity> activities);
 
     [MapperIgnoreTarget(nameof(ActivityDto.Id))]
     [MapperIgnoreSource(nameof(ActivityDto.StatusText))]
     [MapperIgnoreSource(nameof(ActivityDto.OrganizerUserName))]
-    public partial Activity ToEntity(ActivityDto activityDto);
+    public partial Activity MapDtoToActivity(ActivityDto activityDto);
 
     [MapperIgnoreTarget(nameof(ActivityDto.Id))]
     [MapperIgnoreTarget(nameof(Activity.OrganizerId))]
     [MapperIgnoreSource(nameof(ActivityDto.StatusText))]
     [MapperIgnoreSource(nameof(ActivityDto.OrganizerUserName))]
-    public partial void UpdateEntity(ActivityDto activityDto, [MappingTarget] Activity activity);
+    public partial void MapUpdateActivityWithDto(ActivityDto activityDto, [MappingTarget] Activity activity);
 }

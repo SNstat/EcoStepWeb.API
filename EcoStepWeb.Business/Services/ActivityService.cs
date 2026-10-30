@@ -13,24 +13,24 @@ public interface IActivityService
     Task<ActivityDto?> UpdateAsync(int id, ActivityDto dto);
 }
 
-public class ActivityService(AppDbContext context, IActivityMapper activityMapper) : IActivityService
+public class ActivityService(AppDbContext context, ActivityMapper activityMapper) : IActivityService
 {
     public Task<List<ActivityDto>> GetAllAsync()
-        => activityMapper.ToDtos(context.Activities).ToListAsync();
+        => activityMapper.MapActivitiesToDtos(context.Activities).ToListAsync();
 
     public Task<ActivityDto?> GetByIdAsync(int id)
-        => activityMapper.ToDtos(context.Activities.Where(a => a.Id == id)).FirstOrDefaultAsync();
+        => activityMapper.MapActivitiesToDtos(context.Activities.Where(a => a.Id == id)).FirstOrDefaultAsync();
 
 
     public async Task<ActivityDto> CreateAsync(ActivityDto dto)
     {
-        var newActivity = activityMapper.ToEntity(dto);
+        var newActivity = activityMapper.MapDtoToActivity(dto);
 
         context.Activities.Add(newActivity);
 
         await context.SaveChangesAsync();
 
-        var responseDto = await activityMapper.ToDtos(context.Activities
+        var responseDto = await activityMapper.MapActivitiesToDtos(context.Activities
                                .Where(a => a.Id == newActivity.Id))
                                .FirstAsync();
 
@@ -46,11 +46,11 @@ public class ActivityService(AppDbContext context, IActivityMapper activityMappe
         if (targetActivity is null)
             return null;
 
-        activityMapper.UpdateEntity(dto, targetActivity);
+        activityMapper.MapUpdateActivityWithDto(dto, targetActivity);
 
         await context.SaveChangesAsync();
 
-        var responseDto = activityMapper.ToDto(targetActivity);
+        var responseDto = activityMapper.MapActivityToDto(targetActivity);
 
         return responseDto;
     }
