@@ -18,6 +18,9 @@ public static class DataModule
     {
         using var scope = services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL;");
+
         await context.Database.MigrateAsync();
         await DataSeeder.SeedDevelopmentDataAsync(context);
 

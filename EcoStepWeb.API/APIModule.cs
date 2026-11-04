@@ -1,9 +1,13 @@
-﻿using EcoStepWeb.API.OpenApi;
+﻿using EcoStepWeb.API.Jwt;
+using EcoStepWeb.API.OpenApi;
+using EcoStepWeb.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using System.Text;
+using System.Text.Json;
 
 namespace EcoStepWeb.API;
 
@@ -11,6 +15,10 @@ public static class APIModule
 {
     public static WebApplicationBuilder AddAPIModule(this WebApplicationBuilder builder)
     {
+        builder.Services.AddHealthChecks()
+            .AddDbContextCheck<AppDbContext>("DatabaseCheck")
+            .AddApplicationLifecycleHealthCheck();
+
         builder.Services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer<SchemeTransformer>();
@@ -26,7 +34,8 @@ public static class APIModule
             });
         });
 
-        var jwtKey = builder.Configuration["Jwt:Key"]!;
+        var jwtKey = JwtKeyGenerator.GenerateSecureKey();
+        builder.Configuration["Jwt:Key"] = jwtKey;
 
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(jwtOptions =>
@@ -66,6 +75,33 @@ public static class APIModule
             options.EnablePersistentAuthentication();
         }).AllowAnonymous();
 
+        app.MapHealthChecks("/health", CreateHealthCheckOptions()).AllowAnonymous();
+
         return app;
+    }
+
+    private static HealthCheckOptions CreateHealthCheckOptions()
+    {
+        return new HealthCheckOptions
+        {
+            ResponseWriter = async (context, report) =>
+            {
+                context.Response.ContentType = "application/json";
+
+                var response = new
+                {
+                    status = report.Status.ToString(),
+                    checks = report.Entries.Select(e => new
+                    {
+                        name = e.Key,
+                        status = e.Value.Status.ToString(),
+                        duration = e.Value.Duration.TotalMilliseconds + "ms",
+                        description = e.Value.Description
+                    })
+                };
+
+                await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+        };
     }
 }
