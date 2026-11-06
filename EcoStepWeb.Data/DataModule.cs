@@ -6,27 +6,10 @@ namespace EcoStepWeb.Data;
 
 public static class DataModule
 {
-    public static IServiceCollection AddDataModule(this IServiceCollection services)
+    public static IServiceCollection AddDataModule(this IServiceCollection services, string databaseFolder)
     {
-        var baseDir = AppContext.BaseDirectory;
-        var dataFolder = Path.Combine(baseDir, "App_Data");
+        var connectionString = $"Data Source={databaseFolder}/EcoStepDB.db";
 
-        if (!Directory.Exists(dataFolder))
-        {
-            Directory.CreateDirectory(dataFolder);
-        }
-
-        var dbPath = Path.Combine(dataFolder, "EcoStepDB.sqlite");
-        var connectionString = $"Data Source={dbPath}";
-
-        services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(connectionString));
-
-        return services;
-    }
-
-    public static IServiceCollection AddDataModule(this IServiceCollection services, string connectionString)
-    {
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(connectionString));
 

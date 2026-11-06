@@ -16,14 +16,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddBusinessModule();
 
-if(builder.Environment.IsDevelopment())
-{
-    builder.Services.AddDataModule(builder.Configuration.GetConnectionString("DefaultConnection")!);
-} else
-{
-    builder.Services.AddDataModule();
-
-}
+builder.Services.AddDataModule(builder.Configuration["DatabasePath"]!);
 
 builder.Services.AddHealthChecks()
             .AddDbContextCheck<AppDbContext>("DatabaseCheck")

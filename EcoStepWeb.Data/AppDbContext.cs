@@ -26,7 +26,7 @@ public class AppDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlite("Data Source=../EcoStepWeb.Data/Database/EcoStepDB.sqlite");
+            optionsBuilder.UseSqlite("Data Source=../EcoStepWeb.Data/Database/EcoStepDB.db");
         }
 
         base.OnConfiguring(optionsBuilder);

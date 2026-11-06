@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /EcoStepWeb.Data/Database/EcoStepDB.sqlite
 /EcoStepWeb.Data/Database/EcoStepDB.sqlite-shm
 /EcoStepWeb.Data/Database/EcoStepDB.sqlite-wal
+/EcoStepWeb.API/dotnet-tools.json
