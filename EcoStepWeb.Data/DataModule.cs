@@ -6,6 +6,25 @@ namespace EcoStepWeb.Data;
 
 public static class DataModule
 {
+    public static IServiceCollection AddDataModule(this IServiceCollection services)
+    {
+        var baseDir = AppContext.BaseDirectory;
+        var dataFolder = Path.Combine(baseDir, "App_Data");
+
+        if (!Directory.Exists(dataFolder))
+        {
+            Directory.CreateDirectory(dataFolder);
+        }
+
+        var dbPath = Path.Combine(dataFolder, "EcoStepDB.sqlite");
+        var connectionString = $"Data Source={dbPath}";
+
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite(connectionString));
+
+        return services;
+    }
+
     public static IServiceCollection AddDataModule(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<AppDbContext>(options =>
@@ -14,7 +33,7 @@ public static class DataModule
         return services;
     }
 
-    public static async Task<IServiceProvider> SeedDevelopmentDataAsync(this IServiceProvider services)
+    public static async Task<IServiceProvider> SeedMockDataAsync(this IServiceProvider services)
     {
         using var scope = services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -22,7 +41,7 @@ public static class DataModule
         await context.Database.ExecuteSqlRawAsync("PRAGMA journal_mode=WAL;");
 
         await context.Database.MigrateAsync();
-        await DataSeeder.SeedDevelopmentDataAsync(context);
+        await DataSeeder.SeedMockDataAsync(context);
 
         return services;
     }

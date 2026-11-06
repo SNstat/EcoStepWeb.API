@@ -15,7 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddBusinessModule();
-builder.Services.AddDataModule(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
+if(builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDataModule(builder.Configuration.GetConnectionString("DefaultConnection")!);
+} else
+{
+    builder.Services.AddDataModule();
+
+}
 
 builder.Services.AddHealthChecks()
             .AddDbContextCheck<AppDbContext>("DatabaseCheck")
@@ -87,10 +95,10 @@ app.MapHealthChecks("/health", new HealthCheckOptions
     }
 }).AllowAnonymous();
 
+await app.Services.SeedMockDataAsync();
+
 if (app.Environment.IsDevelopment())
 {
-    await app.Services.SeedDevelopmentDataAsync();
-
     app.MapOpenApi().AllowAnonymous();
 
     app.MapScalarApiReference(options =>

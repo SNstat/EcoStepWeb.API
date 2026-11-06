@@ -6,7 +6,7 @@ namespace EcoStepWeb.Data.Seeds;
 
 internal static class DataSeeder
 {
-    public static async Task SeedDevelopmentDataAsync(AppDbContext context)
+    public static async Task SeedMockDataAsync(AppDbContext context)
     {
         if (await context.Users.AnyAsync())
         {
